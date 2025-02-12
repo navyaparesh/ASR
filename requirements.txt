@@ -1,0 +1,8 @@
+streamlit
+torch
+nemo_toolkit
+librosa
+pydub
+noisereduce
+requests
+audio_recorder_streamlit
