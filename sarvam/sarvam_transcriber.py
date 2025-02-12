@@ -1,9 +1,9 @@
 import requests
 
 SARVAM_API_URL = "https://api.sarvam.ai/speech-to-text"
-HEADERS = {"api-subscription-key": "YOUR_API_KEY"}  # Replace with your key
+HEADERS = { "api-subscription-key": "6f50ea02-8ad6-41fe-b265-58b506e07cd3",  }
 
-def transcribe_sarvam(audio_path, language_code="en", with_diarization=False, with_timestamps=False):
+def transcribe_sarvam(audio_path, language_code="hi-IN", with_diarization=False, with_timestamps=False):
     """
     Transcribe an audio file using Sarvam AI's API.
     
