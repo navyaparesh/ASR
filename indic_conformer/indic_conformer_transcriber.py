@@ -6,9 +6,12 @@ import subprocess
 subprocess.run(["git", "clone", "https://github.com/AI4Bharat/NeMo.git", "-b", "nemo-v2"], check=True)
 
 # Load Indic Conformer model
-!wget https://objectstore.e2enetworks.net/indic-asr-public/indicConformer/ai4b_indicConformer_hi.nemo -O hindi.nemo
+# Download model file using wget
+model_url = "https://objectstore.e2enetworks.net/indic-asr-public/indicConformer/ai4b_indicConformer_hi.nemo"
+model_path = "hindi.nemo"
 
-model_path = "hindi.nemo"  # Ensure this file is available
+subprocess.run(["wget", model_url, "-O", model_path], check=True)
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Load ASR model
