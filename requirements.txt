@@ -11,4 +11,4 @@ hydra-core
 omegaconf
 pytorch-lightning
 huggingface_hub==0.16.4
-
+transformers
