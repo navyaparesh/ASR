@@ -11,6 +11,7 @@ st.title("🎙️ ASR Pipeline with Multiple Models")
 
 # Select Data Source
 data_source = st.radio("Select Data Source:", ["Local File", "Live Audio"])
+uploaded_file = None
 
 if data_source == "Local File":
     uploaded_file = st.file_uploader("Upload an audio file", type=["wav", "mp3", "flac"])
@@ -31,20 +32,32 @@ enable_preprocessing = st.checkbox("Enable Preprocessing")
 # Process Button
 if st.button("Process Audio"):
     if uploaded_file:
+        # Handle File Uploader (Convert to Temporary File)
+        if isinstance(uploaded_file, str):  # If live audio, it's already a file path
+            file_path = uploaded_file
+        else:
+            temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
+            temp_file.write(uploaded_file.read())
+            temp_file.close()
+            file_path = temp_file.name
+
         # Apply Preprocessing
         if enable_preprocessing:
-            preprocessed_audio = preprocess_audio(uploaded_file, "processed.wav")
+            processed_audio = preprocess_audio(file_path, "processed.wav")
         else:
-            preprocessed_audio = uploaded_file
+            processed_audio = file_path
 
         # Transcription
         if asr_model == "Sarvam AI":
-            transcript = transcribe_sarvam(preprocessed_audio)
+            transcript = transcribe_sarvam(processed_audio)
         elif asr_model == "Indic Conformer":
-            transcript = transcribe_indic_conformer(preprocessed_audio)
+            transcript = transcribe_indic_conformer(processed_audio)
         else:
             transcript = "Invalid model selected."
 
-        st.text(f"Transcription: {transcript}")
+        st.text(f"Transcription:\n{transcript}")
+
+        # Cleanup Temporary Files
+        os.remove(file_path)
     else:
-        st.error("Please upload an audio file!")
+        st.error("Please upload an audio file or record live audio!")
