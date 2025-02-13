@@ -1,6 +1,7 @@
 import torch
 import nemo.collections.asr as nemo_asr
 import subprocess
+import Cython
 model_path = "hindi.nemo"
 # Clone the NeMo repository
 subprocess.run(["git", "clone", "https://github.com/AI4Bharat/NeMo.git", "-b", "nemo-v2"], check=True)
