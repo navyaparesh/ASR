@@ -3,7 +3,7 @@ import tempfile
 import os
 from preprocessing.audio_preprocessing import preprocess_audio
 from sarvam.sarvam_transcriber import transcribe_sarvam
-from indic_conformer.indic_conformer_transcriber import transcribe_indic_conformer
+from indic_conformer.indic_conformer_transcriber import transcribe_indic
 from audio_recorder_streamlit import audio_recorder
 
 # Streamlit UI
