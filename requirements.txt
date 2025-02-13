@@ -1,6 +1,5 @@
 streamlit
 torch
-nemo_toolkit
 librosa
 pydub
 noisereduce
