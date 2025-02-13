@@ -22,7 +22,7 @@ if os.path.exists(model_path):
 else:
     raise FileNotFoundError(f"ASR Model file {model_path} not found!")
 
-def transcribe_indic_conformer(audio_path):
+def transcribe_indic(audio_path):
     """
     Transcribe an audio file using Indic Conformer ASR.
     
