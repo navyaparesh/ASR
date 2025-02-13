@@ -5,4 +5,7 @@ librosa
 pydub
 noisereduce
 requests
+soundfile
 audio_recorder_streamlit
+
+
