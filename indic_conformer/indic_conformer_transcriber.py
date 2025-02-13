@@ -1,6 +1,10 @@
 import torch
 import nemo.collections.asr as nemo_asr
-!git clone https://github.com/AI4Bharat/NeMo.git -b nemo-v2
+import subprocess
+
+# Clone the NeMo repository
+subprocess.run(["git", "clone", "https://github.com/AI4Bharat/NeMo.git", "-b", "nemo-v2"], check=True)
+
 # Load Indic Conformer model
 !wget https://objectstore.e2enetworks.net/indic-asr-public/indicConformer/ai4b_indicConformer_hi.nemo -O hindi.nemo
 
