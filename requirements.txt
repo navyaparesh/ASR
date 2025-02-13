@@ -7,5 +7,7 @@ noisereduce
 requests
 soundfile
 audio_recorder_streamlit
-
+hydra-core
+omegaconf
+pytorch-lightning
 
