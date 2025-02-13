@@ -10,5 +10,5 @@ audio_recorder_streamlit
 hydra-core
 omegaconf
 pytorch-lightning
-huggingface_hub>=0.14.1
+huggingface_hub>=0.23
 
