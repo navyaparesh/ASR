@@ -1,7 +1,9 @@
 import torch
 import nemo.collections.asr as nemo_asr
-
+!git clone https://github.com/AI4Bharat/NeMo.git -b nemo-v2
 # Load Indic Conformer model
+!wget https://objectstore.e2enetworks.net/indic-asr-public/indicConformer/ai4b_indicConformer_hi.nemo -O hindi.nemo
+
 model_path = "hindi.nemo"  # Ensure this file is available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
