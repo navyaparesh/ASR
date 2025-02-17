@@ -8,7 +8,7 @@ requests
 soundfile
 audio_recorder_streamlit
 Cython
-youtokentome
+youtokentome==1.0.6
 #hydra-core
 #omegaconf
 #pytorch-lightning
