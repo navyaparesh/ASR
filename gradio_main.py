@@ -1,61 +1,44 @@
 import gradio as gr
-import tempfile
 import os
-from audio_preprocessing import preprocess_audio
-from sarvam_transcriber import transcribe_sarvam
-from indic_conformer_transcriber import transcribe_indic
+import requests
 
-def process_audio(audio_file, asr_model, enable_preprocessing):
-    """
-    Processes the audio file and returns transcription.
+SARVAM_API_URL = "https://api.sarvam.ai/speech-to-text"
+HEADERS = { "api-subscription-key": "6f50ea02-8ad6-41fe-b265-58b506e07cd3" }
+
+def transcribe_sarvam(audio_path, language_code="hi-IN", with_diarization=False, with_timestamps=False):
+    try:
+        with open(audio_path, 'rb') as audio_file:
+            files = [('file', (audio_path, audio_file, 'audio/wav'))]
+            payload = {
+                'model': 'saarika:v2',
+                'language_code': language_code,
+                'with_diarization': str(with_diarization).lower(),
+                'with_timesteps': str(with_timestamps).lower()
+            }
+            response = requests.post(SARVAM_API_URL, headers=HEADERS, data=payload, files=files)
+
+            if response.status_code == 200:
+                return response.json().get('transcript', 'No transcription available')
+            else:
+                return f"Error: {response.status_code}, {response.text}"
     
-    Parameters:
-    - audio_file: file : Uploaded audio file.
-    - asr_model: str : Selected ASR model.
-    - enable_preprocessing: bool : Whether to preprocess the audio.
+    except Exception as e:
+        return f"Error in Sarvam AI transcription: {e}"
 
-    Returns:
-    - str : Transcribed text.
-    """
-    if audio_file is None:
-        return "Please upload an audio file."
+def process_audio(audio_path):
+    if audio_path is None or not os.path.exists(audio_path):
+        return "Please upload a valid audio file."
 
-    # Save the uploaded file
-    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-    temp_file.write(audio_file)
-    temp_file.close()
-    file_path = temp_file.name
-
-    # Apply Preprocessing
-    if enable_preprocessing:
-        processed_audio = preprocess_audio(file_path, "processed.wav")
-    else:
-        processed_audio = file_path
-
-    # Transcription
-    if asr_model == "Sarvam AI":
-        transcript = transcribe_sarvam(processed_audio)
-    elif asr_model == "Indic Conformer":
-        transcript = transcribe_indic(processed_audio)
-    else:
-        transcript = "Invalid model selected."
-
-    # Cleanup Temporary File
-    os.remove(file_path)
+    transcript = transcribe_sarvam(audio_path)
 
     return transcript
 
-# Gradio Interface
 interface = gr.Interface(
     fn=process_audio,
-    inputs=[
-        gr.Audio(source="upload", type="file", label="Upload Audio"),
-        gr.Radio(["Sarvam AI", "Indic Conformer"], label="Select ASR Model"),
-        gr.Checkbox(label="Enable Preprocessing"),
-    ],
+    inputs=gr.Audio(type="filepath", label="Upload Audio"),
     outputs=gr.Textbox(label="Transcription"),
-    title="🎙️ ASR Pipeline with Multiple Models",
-    description="Upload an audio file and transcribe it using either Sarvam AI or Indic Conformer models.",
+    title="🎙️ Sarvam AI Transcriber",
+    description="Upload an audio file and transcribe it using Sarvam AI's ASR model.",
 )
 
 if __name__ == "__main__":
